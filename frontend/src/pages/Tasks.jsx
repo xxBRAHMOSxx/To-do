@@ -20,7 +20,7 @@ export default function Tasks() {
     console.log(user);
     
     // const data = getTasks(user.userId)
-    // setTitle(data[0].Title)
+    //setTitle(data[0].Title)
     //setTaskList(data[0].Task)
     fetchTasks(user.userId)
     onAddTaskclicked({Title, taskList})
@@ -74,7 +74,7 @@ export default function Tasks() {
     <h1 className='text-4xl font-bold mb-8'>TO DO App</h1>
 
       <div className='flex items-top justify-start h-100 w-200 bg-gray-100 p-4 rounded-lg shadow-md overflow-y-auto m-2'>
-        
+
         </div>
 
         {/* <InputForm/> */}
