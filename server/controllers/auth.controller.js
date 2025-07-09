@@ -26,6 +26,11 @@ export const login = async (req, res) => {
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
         });
+        res.cookie("userId", user._id, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        })
         res.status(200).json({
             message: "login successful",
             user:{
@@ -71,5 +76,6 @@ export const register = async (req,res) =>{
 
 export const logout = (req,res)=>{
     res.clearCookie("token")
+    res.clearCookie("userId")
     res.status(200).json({message: "logout successful"})
 }

@@ -13,6 +13,8 @@ export const getTasks = async (req,res)=>{
         res.status(200).json({
             message: "Tasks fetched successfully",
             tasks: tasks,
+            // Title: tasks.Title,
+            // Description: tasks.Task,
         })
 
     } catch (error) {
