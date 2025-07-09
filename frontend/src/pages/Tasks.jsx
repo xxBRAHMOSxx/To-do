@@ -1,99 +1,146 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getTasks } from '../store/taskStore'
+import { deleteTask, getTasks, newTask } from '../store/taskStore'
+import TaskListWithFlexBox from '../components/TaskListWithFlexBox'
 // import InputForm from '../components/InputForm'
 
 export default function Tasks() {
-  const [Title, setTitle] = useState("")
-  const [taskList, setTaskList] = useState([])
+  const [Title, setTitle] = useState()
+  const [taskList, setTaskList] = useState()
+  const [Taskdata, setTaskData] = useState([])
   
-  const [Task, setTask] = useState([{"Title": "", "Task": []}])
-
   const navigate = useNavigate()
-  var taskData = []
+ 
+  let array = []
+  const user = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
+  //  user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
       navigate('/login')
     }
     console.log(user);
-    
-    // const data = getTasks(user.userId)
-    //setTitle(data[0].Title)
-    //setTaskList(data[0].Task)
-    fetchTasks(user.userId)
-    onAddTaskclicked({Title, taskList})
-      
+    fetchTasks(user.userId)              
+   
   },[])
   
   const fetchTasks = async (userId) => {
     try {
      const data = await getTasks(userId)
-      taskData = data.tasks
-    setTitle(data.tasks[0].Title)
-    setTaskList(data.tasks[0].Task)
-    // setTask(Title, taskList)
-    console.log("task data", taskData);
+  
+
+    array = data.map((task) => {
+      return {
+        Title: task.Title,
+        Task: task.Task,
+        _id: task._id,
+      }
+    })
+    setTaskData(array)
     
-      
+    console.log("Fetched tasks:", array);    
     } catch (error) {
       console.error("Error fetching tasks:", error);
-      // Handle error appropriately, e.g., show a notification or alert
       
     }
   }
 
-  const onAddTaskclicked = ({Title, taskList}) => {
-    setTask(prev => {
-      if(prev.length === 1 && prev[0].Title === "" && prev[0].Task.length === 0) {
-        return [{ Title: Title, Task: taskList }]
+  const onAddTaskclicked = async (Title, taskList,user) => {
 
-      }
-      else {return [
-        ...prev,
-        { Title: Title, Task: taskList }
-      ]}
-    })
+    if (!Title || !taskList) {
+      alert("Please enter both title and task")
+      return
+    }
+    try {
+      await newTask(Title, taskList, user.userId)
+      console.log("New task created successfully");
+      // setTitle('')
+      // setTaskList('')
+      fetchTasks(user.userId)
+    } catch (error) {
+      console.error("Error creating new task:", error);
+      alert("Failed to create new task")
+    }
   }
 
-   const removeItem = (title) => {  
-    setTask(prev => {
-      return prev.filter(task => task.Title !== title)})
-  };
+  const onDeleteTaskClicked = async (taskId) => {
+    if (!taskId) {
+      alert("Please provide a valid task ID")
+      return
+    }
+    try {
 
-  const handleNavigate = ()=>{
-    navigate('/task/update',{state: { task: Task }})
+      await deleteTask(taskId)
+      console.log("Task deleted successfully",);
+      fetchTasks(user.userId)
+      
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      alert("Failed to delete task")
+      
+    }
+  
   }
-
 
   return (
-    // <TaskContext.Provider value={Task}>
+
     <>
       <div className='flex flex-col items-center justify-center h-screen'>
     <h1 className='text-4xl font-bold mb-8'>TO DO App</h1>
 
-      <div className='flex items-top justify-start h-100 w-200 bg-gray-100 p-4 rounded-lg shadow-md overflow-y-auto m-2'>
+      <div className='flex flex-col overflow-auto items-center justify-start h-100 w-200 bg-green-300 p-4 rounded-lg shadow-md m-2 text-red-200'>
 
+        
+      {Taskdata.map((task,index) =>(
+        <div key={task.Title} className='flex w-[80%] flex-col  bg-green-100 p-4 rounded-lg shadow-md items-center justify-around m-2'>
+          {/* <h2 className='text-xl font-bold mb-2'>{task.Title}</h2> */}
+          <TaskListWithFlexBox Title={task.Title} Des={task.Task} />
+          <div className="flex gap-4 mt-2">
+
+          <button 
+            className='bg-blue-500 text-white px-4 py-1  rounded-lg shadow-md hover:bg-blue-600 transition duration-300'
+            onClick={() => navigate('/task/update',{state: {task}})}>
+            Update Task
+          </button>
+          <button 
+          onClick={() => onDeleteTaskClicked( task._id)}
+          className='bg-red-500 text-white px-4 py-1  rounded-lg shadow-md hover:bg-red-600 transition duration-300'
+          >
+            Delete task
+          </button>
+            </div>
         </div>
-
-        {/* <InputForm/> */}
-
-        <input className='h-10 w-100 border-solid border-2 rounded-lg lue-500 p-2 m-2' type="text" value={Title} onChange={(e)=>setTitle(e.target.value)} />
-        <input className='h-10 w-100 border-solid border-2 rounded-lg lue-500 p-2 m-2' type="text" value={taskList} onChange={(e)=>setTaskList(e.target.value)} />
+      ))}
+          
+    
+        </div> 
+        
+        <label className='text-2xl' htmlFor="titleInput">Title</label>
+        <input
+                id='titleInput' 
+               className='h-10 w-100  border-solid border-2 rounded-lg lue-500 p-2 m-2 focus:border-2 focus:border-teal-300  focus:outline-none focus:ring-0 text-white' 
+               type="text" 
+                
+               onChange={(e)=>setTitle(e.target.value)} />
+        <label className='text-2xl' htmlFor="taskInput">Task</label>
+        <input
+              id='taskInput' 
+              className='h-10 w-100 border-solid border-2 rounded-lg lue-500 p-2 m-2 focus:border-2 focus:border-teal-300 focus:outline-none focus:ring-0 text-white' 
+               type="text"
+               onChange={(e)=>setTaskList(e.target.value)} />
  
         <button
          className='bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300'
          onClick={() => {
           
-          onAddTaskclicked({Title, taskList})
+          onAddTaskclicked(Title, taskList ,user)
           }}>
           add task
         </button>
         
       </div>
     </>
-    // </TaskContext.Provider>
+
   )
 }
 

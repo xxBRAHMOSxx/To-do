@@ -31,18 +31,18 @@ const LoginForm = () => {
     
 
   return (
-    <div className='flex flex-col h-100 w-200 bg-gray-100 p-4 rounded-lg shadow-md overflow-y-auto m-2'>
+    <div className='flex flex-col h-100 w-200 bg-green-300 p-4 rounded-lg shadow-2xl overflow-y-auto m-2'>
            
-     <div className="flex flex-col w-full h-full bg-white p-4 rounded-lg shadow-md items-center justify-center">
-                    {/* Placeholder for login form */}
+     <div className="flex flex-col w-full h-full bg-green-300 p-4 items-center justify-center">
+                    
                     <input 
-                            className="flex m-2 bg-gray-50 w-full h-15 placeholder: text-center rounded-2xl justify-center"
+                            className="flex m-2 focus:border-2 focus:border-teal-300 focus:outline-none focus:ring-0 bg-gray-50 w-full h-15 placeholder: text-center rounded-2xl justify-center"
                             type="text" 
                             placeholder="Username"
                             onChange={(e)=> setUsername(e.target.value)} 
                         />
                     <input 
-                        className="flex m-2 bg-gray-50 w-full h-15 placeholder: text-center rounded-2xl" 
+                        className="flex m-2 focus:border-2 focus:border-teal-300 focus:outline-none focus:ring-0 bg-gray-50 w-full h-15 placeholder: text-center rounded-2xl" 
                         type="password" 
                         placeholder="Password" 
                         onChange={(e)=> setPassword(e.target.value)} 

@@ -1,2 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+    ----color-primary: #f3f4f6;
+}
+
+@layer base {
+    body {
+        @apply bg-gradient-to-r from-green-600 to-green-700 text-teal-300;
+    }
+} 
+.input{
+ @apply border-2 text-white outline-none ring-0
+}

@@ -11,13 +11,13 @@ const InputForm
   return (
     <div>
         <input 
-            className='h-10 w-100 border-solid border-2 rounded-lg lue-500 p-2 m-2' 
+            className='h-10 w-100 focus:border-2 focus:border-teal-300 focus:outline-none focus:ring-0 border-solid border-2 rounded-lg lue-500 p-2 m-2' 
             type="text" 
             value={Title} 
             onChange={(e)=>setTitle(e.target.value)} 
             />
         <input 
-            className='h-10 w-100 border-solid border-2 rounded-lg lue-500 p-2 m-2' 
+            className='h-10 w-100 border-solid border-2 rounded-lg lue-500 p-2 m-2 focus:border-2 focus:border-teal-300 focus:outline-none focus:ring-0' 
             type="text" 
             value={taskList} 
             onChange={(e)=>setTaskList(e.target.value)} />

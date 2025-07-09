@@ -4,6 +4,7 @@ import Update from './pages/Update.jsx'
 
 import './App.css'
 import Login from './pages/login.jsx'
+import Register from './pages/Register.jsx'
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Routes>
       <Route path='/tasks' element={<Tasks/>} />
       <Route path='/task/update' element={<Update/>} />
-      <Route path='/login' element={<Login/>} />
+      <Route path='/' element={<Login/>} />
+      <Route path='/register' element={<Register/>} />
       </Routes>
     </div>
     </BrowserRouter>
