@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Cookies from "js-cookie"
+
 import { deleteTask, getTasks, newTask } from '../store/taskStore'
 import TaskListWithFlexBox from '../components/TaskListWithFlexBox'
 // import InputForm from '../components/InputForm'
@@ -13,13 +15,15 @@ export default function Tasks() {
  
   let array = []
   const user = JSON.parse(localStorage.getItem('user'))
+  const token = Cookies.get("token")
+  const userId = Cookies.get('userId')
 
   useEffect(() => {
   //  user = JSON.parse(localStorage.getItem('user'))
-    if (!user) {
-      navigate('/login')
+    if (!token || !userId) {
+      navigate('/')
     }
-    console.log(user);
+    // console.log(token);
     fetchTasks(user.userId)              
    
   },[])

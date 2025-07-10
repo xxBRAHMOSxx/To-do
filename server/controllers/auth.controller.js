@@ -3,6 +3,7 @@ import { UserModel } from "../db/Schema.js";
 import jwt from "jsonwebtoken"; 
 import bcrypt from "bcrypt";
 
+
 export const login = async (req, res) => {
     const { username, password } = req.body;
     
@@ -22,14 +23,18 @@ export const login = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     
         res.cookie("token", token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+
+            // path: "/",
         });
         res.cookie("userId", user._id, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            httpOnly: false,
+            secure: true,
             sameSite: "strict",
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
         })
         res.status(200).json({
             message: "login successful",

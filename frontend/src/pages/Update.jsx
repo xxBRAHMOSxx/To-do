@@ -9,6 +9,8 @@ const Update = () => {
     console.log("Task data received:", Task.task.Title);
   },[])
 
+  const [UpdatedTitle, setUpdatedTitle] = useState()
+
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -18,6 +20,7 @@ const Update = () => {
           <input
           className="flex m-2 bg-gray-50 w-full h-full focus:border-2 text-2xl px-2 focus:border-teal-300 focus:outline-none focus:ring-0"
           value={Task.task.Title || ""}
+          // onChange={}
            type="text"
           
           />

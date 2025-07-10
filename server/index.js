@@ -11,13 +11,13 @@ import path from "path"
 dotenv.config()
 
 const app = express()
+app.use(cookieParser()) 
 const PORT = 5000
 const __dirname = path.resolve()
 
-app.use(cors())
+app.use(cors({ origin: true, credentials: true }))
 
 app.use(express.json())  
-app.use(cookieParser()) 
 
 app.use("/api/auth", authRouter)
 app.use("/api/task",taskRouter)

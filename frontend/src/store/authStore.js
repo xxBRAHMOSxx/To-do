@@ -21,7 +21,7 @@ export const register = async (userData)=>{
 
 export const login = async (userData)=>{
     try {
-        const response = await axios.post(`${API_URL}/login`,userData)
+        const response = await axios.post(`${API_URL}/login`,userData,{withCredentials: true, credentials: 'include'})
         if(response.status===200){
             console.log("login successful:", response.data);
             
